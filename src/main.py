@@ -21,7 +21,22 @@ def createInvoice():
     amount_due = input("What is the amount due? ($x.xx) > ")
     services = input("What services were/will be rendered? > ")
     
-    
+    print(
+        f"""
+        Name: {name}\n
+        Affiliation: {affiliation}\n
+        Services: {services}\n
+        Due Date: {due_date}\n
+        Issued: {date_issued}\n
+        Client Phone Number: {client_phone_number}\n
+        Client Email Address: {client_email_address}\n
+        Client Billing Address: {client_billing_address}\n
+        Invoice Status: {invoice_status}\n
+        Amount Due: {amount_due}\n
+        Services Issued: {services}\n
+        """
+
+    )
     
 def deleteInvoice(invoiceID):
     pass
@@ -42,7 +57,7 @@ def main():
         choice = input("Choose an option from 1 - 4. > ")
         match choice:
             case "1":
-                print("Create an invoice.")
+                createInvoice()
             case "2":
                 print("Delete an invoice.")
             case "3":
@@ -70,6 +85,8 @@ def main():
             case "4":
                 print("Goodbye.")
                 break
+            case _:
+                print("That is not a valid option.")
     
 if __name__ == "__main__":
     main()
