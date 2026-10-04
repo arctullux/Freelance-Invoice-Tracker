@@ -1,23 +1,66 @@
 # Small invoice tracker for freelancers.
 
 import sqlite3
-
+from datetime import datetime
+import re
 dbConnection = sqlite3.connect("../db/invoices.db")
 dbCursor = dbConnection.cursor()
 
 # invoice ID format: I2026-00X
 def createInvoice():
-    print("I am going to need some information.")
+    print("""Client information and freelancer information will be needed to create an invoice.
+             Please gather and enter the following information below the line:
+             
+             Name (Full name, excluding middle initial)
+             Affiliation
+             Due Date
+             Date Issued
+             Client Phone Number (Optional, if email is included. Include country code, and separate blocks of numbers.)
+             Client Email Address (Optional, if phone number is included.)
+             Client Billing Address (Address of business, typically)
+             Invoice Status (Please include one of 4 options: New, Incoming, Paid, or Overdue.)
+             Amount Due (Include currency units, and include two decimal places.)
+             Services (What services were rendered? Be detailed.)
+             
+             =======================================================================
+             """)
+
+    # TODO: Validate input with regular expressions.
     name = input("What is the client's name? > ")
     affiliation = input("What company or organization is the client affiliated with? > ")
-    services = input("What were the services rendered? > ")
-    due_date = input("What is the due date? (mm/dd/yyyy) > ")
-    date_issued = input("What was the date issued? (mm/dd/yyyy) > ")
+    while True:
+        due_date = input("What is the due date? (mm/dd/yyyy) > ")
+        valid = validateTheDate(due_date)
+        if valid:
+            break
+        else:
+            print("That is not a valid date.")
+            continue
+    while True:
+        date_issued = input("What was the date issued? (mm/dd/yyyy) > ")
+        valid = validateTheDate(date_issued)
+        if valid:
+            break
+        else:
+            print("That is not a valid date.")
+            continue
     client_phone_number = input("Whats the client's phone number? > ")
     client_email_address = input("Whats the client's email address? > ")
     client_billing_address = input("Whats the client's billing address? > ")
-    invoice_status = input("What is the status? (new/upcoming/paid/overdue) > ")
-    
+    while True:
+        invoice_status = input("What is the status? (new/upcoming/paid/overdue) > ")
+        match invoice_status:
+            case "new":
+                break
+            case "upcoming":
+                break
+            case "paid":
+                break
+            case "overdue":
+                break
+            case _:
+                print("That is not a valid status.")
+
     amount_due = input("What is the amount due? ($x.xx) > ")
     services = input("What services were/will be rendered? > ")
     
@@ -37,7 +80,13 @@ def createInvoice():
         """
 
     )
-    
+
+def validateTheDate(date):
+    try:
+        datetime.strptime(date, "%mm/%dd/%YYYY")
+        return True
+    except ValueError:
+        return False
 def deleteInvoice(invoiceID):
     pass
     
